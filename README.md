@@ -1,7 +1,7 @@
 # fireProtocol
 Fire Packets (4 bytes):
 
-SOF (8 bits) 	Command (8 bits)	 Payload (16 bytes)	Footer (8 bits)
+SOF (8 bits) | Command (8 bits) | Payload (16 bytes) | Footer (8 bits)
 
 It gets 1 byte from the upper layer.
 It’s a single layer, stateless protocol i.e. complete information is present in every packet that is exchanged between two devices.
@@ -11,7 +11,7 @@ A device can be sender or receiver at different points of time.
 	
 			i. SOF (8bits)
 			
-			CB	CB	CB	CB	CB	CB	CB	CB
+			CB | CB | CB | CB | CB | CB | CB | CB
 			
 			CB - Character Bit
 			
@@ -21,7 +21,7 @@ A device can be sender or receiver at different points of time.
 			
 			ii. Command (8bits)
 			
-			Opcode bit for get() / set() 	Sub Op	Sub Op	Sub Op	LB	LB	LB	LB
+			Opcode bit for get() / set() 	Sub Op | Sub Op | Sub Op | LB | LB | LB | LB
 			
 			Sub Op -> Sub Opcode
 			LB -> Length Bit
@@ -32,13 +32,13 @@ A device can be sender or receiver at different points of time.
 		
 	Data (8 bits)
 			
-			Data	Data	Data	Data	Data	Data	Data	Data
+			Data | Data | Data | Data | Data | Data | Data | Data
 			
 			Data -> Data Bit
 	
 	Footer (8 bits):
 		
-			CRC	CRC	CRC	CRC	CRC	CRC	CRC	CRC
+			CRC | CRC | CRC | CRC | CRC | CRC | CRC | CRC
 		
 			CRC -> Error Correction Bit: Empowers the Protocol to detect, correct bit flips.
 	
@@ -65,5 +65,3 @@ Foot Notes:
 	- Last bit signifies - okay all things are done
 	- ECB -> Checksum / CRC
 	
-
-![image](https://user-images.githubusercontent.com/69559993/195980773-dc8f1dd2-2902-4fe2-9aff-c25391ea92a5.png)
