@@ -17,6 +17,6 @@ void sendData()
   {
     data[strlen(data) - 1] = '\0';
   }
- 
-  printf("%s", data);
+
+  /* Write code to frame the fire packet */
 }
