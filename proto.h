@@ -1,6 +1,7 @@
 /* Include */
 #include <stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 /* Global declarations */
 typedef struct firePacket_t

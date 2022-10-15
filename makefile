@@ -1,15 +1,19 @@
-CC = gcc
+#Usage:
+#make		#complie all binaries
+#make clean #remove all binaries and objects
 
-fire: proto.o sendData.o
+OBJECTS = proto.o sendData.o
+
+fire: $(OBJECTS)
 	@echo "building fire"
 	@gcc -o fire proto.o sendData.o
 
 proto.o: proto.c proto.h
-	@echo "building proto.o"
+	@echo "produced proto.o"
 	@gcc -g -c -o proto.o proto.c 
 
 sendData.o: sendData.c proto.h
-	@echo "building sendData.o"
+	@echo "produced sendData.o"
 	@gcc -g -c -o sendData.o sendData.c
 
 clean:
