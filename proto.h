@@ -8,7 +8,7 @@ typedef struct firePacket_t
 {
   char start;
   char command;
-  int data[4];
+  int msg[4];
   char footer;
 } firePacket_st;
 
