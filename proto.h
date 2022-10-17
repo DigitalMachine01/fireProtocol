@@ -10,7 +10,14 @@ typedef struct firePacket_t
   char command;
   int data[4];
   char footer;
-} firePacket;
+} firePacket_st;
+
+/* for a linked list */
+typedef struct dataPackets_t
+{
+  firePacket_st firePacket;
+  firePacket_st* next;
+}dataPackets_st;
 
 /* Function declarations */
 void sendData();

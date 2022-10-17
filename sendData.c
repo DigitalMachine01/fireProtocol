@@ -2,8 +2,11 @@
 
 #define MAXSIZE 256
 
+void createDataPacketChain(char*, dataPackets_st**);
+
 void sendData()
 {
+  dataPackets_st* dataHeadPointer; 
   char* data = malloc(MAXSIZE + 1);
 
   printf("\nEnter your message: ");
@@ -18,5 +21,12 @@ void sendData()
     data[strlen(data) - 1] = '\0';
   }
 
-  /* Write code to frame the fire packet */
+  /* frame the fire packet */
+
+  createDataPacketChain(data, &dataHeadPointer);
+}
+
+void createDataPacketChain(char * data_ptr, dataPackets_st** dataHeadPointer_ptr)
+{
+    
 }
