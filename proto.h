@@ -8,7 +8,7 @@ typedef struct firePacket_t
 {
   char start;
   char command;
-  int msg[4];
+  char msg_bytes[16];
   char footer;
 } firePacket_st;
 
@@ -16,7 +16,7 @@ typedef struct firePacket_t
 typedef struct dataPackets_t
 {
   firePacket_st firePacket;
-  firePacket_st* next;
+  struct dataPackets_t* next;
 }dataPackets_st;
 
 /* Function declarations */
