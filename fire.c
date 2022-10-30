@@ -182,3 +182,68 @@ static fire_error_t put_byte_to_buffer(fire_packet_handler_st *handler, uint8_t 
       
         return error;
 }
+
+fire_error_t fire_send_packet( fire_packet_handler_st *handler, uint8_t *data, uint32_t size)
+{
+        uint32_t i;
+        uint8_t byte;
+        uint8_t crc_buff[2];
+        uint16_t crc;
+
+        assert(data != NULL);
+        assert(handler != NULL);
+
+        if(handler->fire->write_byte(FIRE_SPECIAL_BYTE_END) == 0)
+            return FIRE_ERROR_BUFFER_OVERFLOW;
+        
+        crc = handler->fire->crc_seed;
+
+        for(i = 0; i < size; i++) {
+            byte = data[i];
+            crc = calc_crc_ccitt(byte, crc);
+            if(write_encoded_byte(handler, byte) == 0)
+                return FIRE_ERROR_BUFFER_OVERFLOW;
+        }
+
+        crc_buf[0] = (uint8_t) (crc >> 8);
+        crc_buf[1] = (uint8_t) (crc & 0xFF);
+
+        for(i = 0; i < 2; i++){
+            byte = crc_buf[i];
+            if(write_encoded_byte(handler, byte) == 0)
+                return FIRE_ERROR_BUFFER_OVERFLOW;
+        }
+
+        if (handler->fire->write_byte(FIRE_SPECIAL_BYTE_END) == 0)
+            return FIRE_ERROR_BUFFER_OVERFLOW;
+        
+        return FIRE_NO_ERROR;
+}
+
+static uint8_t write_encoded_byte(fire_packet_handler_st *handler, uint8_t byte)
+{
+  uint8_t escape = 0;
+
+  assert(handler != NULL);
+
+  switch(byte){
+    case FIRE_SPECIAL_BYTE_END:
+          byte = FIRE_ESCAPED_BYTE_END;
+          escape = 1;
+          break;
+    case FIRE_SPECIAL_BYTE_ESC:
+          byte = FIRE_ESCAPED_BYTE_ESC;
+          escape = 1;
+          break;
+  }
+
+  if(escape != 0){
+          if(handler->fire->write_byte(FIRE_SPECIAL_BYTE_ESC) == 0)
+              return 0;
+  }
+  
+  if(handler->fire->write_byte(byte) == 0)
+          return 0;
+  
+  return 1;
+}

@@ -2,20 +2,21 @@
 #make		#complie all binaries
 #make clean #remove all binaries and objects
 
-OBJECTS = proto.o sendData.o
+TARGET = fire_app
 
-fire: $(OBJECTS)
-	@echo "building fire"
-	@gcc -o fire proto.o sendData.o
+$(TARGET): fire_app.o fire.a
+	@echo "building the fire application.."
+	gcc $^ -o $@
 
-proto.o: proto.c proto.h
-	@echo "produced proto.o"
-	@gcc -g -c -o proto.o proto.c 
+fire_app.o: fire_app.c
+	gcc -c $< -o $@
 
-sendData.o: sendData.c proto.h
-	@echo "produced sendData.o"
-	@gcc -g -c -o sendData.o sendData.c
+fire.a: fire.o
+	ar rcs $@ $^
+
+fire.o: fire.c fire.h
+	gcc -g -c -o $@ $<
 
 clean:
-	@echo "Cleaning up.."
-	@rm *.o
+	@echo "cleaning up.."
+	rm -f *.o *.a $(TARGET)
