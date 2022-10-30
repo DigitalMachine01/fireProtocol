@@ -4,7 +4,7 @@
 
 void createDataPacketChain(char*, dataPackets_st**);
 
-void sendData()
+void set()
 {
   dataPackets_st* dataHeadPointer = 0; 
   char* data = malloc(MAXSIZE + 1);
