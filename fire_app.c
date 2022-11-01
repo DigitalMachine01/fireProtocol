@@ -9,4 +9,45 @@ uint8_t write_byte(uint8_t byte);
 
 static uint8_t buf[100];
 
-static const 
+static const fire_packet_st fire = {
+        .buf = buf,
+        .bufsize = sizeof(buf),
+        .crc_seed = 0xFFFF,
+        .read_message = read_message,
+        .write_byte = write_byte
+};
+
+static fire_packet_handler_st handler;
+
+int main(void)
+{
+        fire_init(&handler, &fire);
+
+        char *to_send = "Sumit";
+        printf("SEND: %s", to_send);
+        fire_send_packet(&fire, to_send, strlen(to_send));
+
+        uint8_t emulated_rcv[] = {0xc0, 0x74, 0x65, 0x73, 0x74, 0x1F, 0xc6, 0xc0};
+        for(uint8_t i = 0; i <sizeof(emulated_rcv); i++){
+            uint8_t rx = emulated_rcv[i];
+            printf("RX: %02X\n", rx);
+            fire_read_byte(&fire, rx);
+        }
+        return 0;
+}
+
+void read_message(uint8_t *data, uint32_t size)
+{
+        char recv_buf[size + 1];
+
+        memcpy(recv_buf, data, size);
+        recv_buf[size] = 0;
+
+        printf("RECV: %s\n", recv_buf);
+}
+
+uint8_t write_byte(uint8_t byte)
+{
+        printf("TX: %02X\n",  byte);
+        return 1;
+}

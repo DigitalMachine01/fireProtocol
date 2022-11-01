@@ -187,7 +187,7 @@ fire_error_t fire_send_packet( fire_packet_handler_st *handler, uint8_t *data, u
 {
         uint32_t i;
         uint8_t byte;
-        uint8_t crc_buff[2];
+        uint8_t crc_buf[2];
         uint16_t crc;
 
         assert(data != NULL);
