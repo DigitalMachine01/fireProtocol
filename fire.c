@@ -27,6 +27,11 @@ THE SOFTWARE.
 #include <stddef.h>
 #include <assert.h>
 
+static uint16_t calc_crc_ccitt(uint8_t byte, uint16_t crc_old);
+static void reset(fire_packet_handler_st *handler);
+static fire_error_t put_byte_to_buffer(fire_packet_handler_st *handler, uint8_t byte);
+static uint8_t write_encoded_byte(fire_packet_handler_st *handler, uint8_t byte);
+
 static const uint16_t crc_table[256] = {
         0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5,
         0x60c6, 0x70e7, 0x8108, 0x9129, 0xa14a, 0xb16b,
@@ -84,7 +89,7 @@ static uint16_t calc_crc_ccitt(uint8_t byte, uint16_t crc_old)
         return crc;
 }
 
-fire_error_t slip_init(fire_packet_handler_st *handler, const fire_packet_st *fire)
+fire_error_t fire_init(fire_packet_handler_st *handler, const fire_packet_st *fire)
 {
         assert(handler != NULL);
         assert(fire!= NULL);
@@ -96,7 +101,6 @@ fire_error_t slip_init(fire_packet_handler_st *handler, const fire_packet_st *fi
         reset(handler);
 
         return FIRE_NO_ERROR;
-
 }
 
 static void reset(fire_packet_handler_st *handler)

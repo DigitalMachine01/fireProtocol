@@ -24,14 +24,14 @@ int main(void)
         fire_init(&handler, &fire);
 
         char *to_send = "Sumit";
-        printf("SEND: %s", to_send);
-        fire_send_packet(&fire, to_send, strlen(to_send));
+        printf("SEND: %s\n", to_send);
+        fire_send_packet(&handler, to_send, strlen(to_send));
 
-        uint8_t emulated_rcv[] = {0xc0, 0x74, 0x65, 0x73, 0x74, 0x1F, 0xc6, 0xc0};
-        for(uint8_t i = 0; i <sizeof(emulated_rcv); i++){
+        uint8_t emulated_rcv[] = {0xC0, 0x53, 0x75, 0x6D, 0x69, 0x74, 0x42, 0x47, 0xC0};
+        for(uint8_t i = 0; i < sizeof(emulated_rcv); i++){
             uint8_t rx = emulated_rcv[i];
             printf("RX: %02X\n", rx);
-            fire_read_byte(&fire, rx);
+            fire_read_byte(&handler, rx);
         }
         return 0;
 }
